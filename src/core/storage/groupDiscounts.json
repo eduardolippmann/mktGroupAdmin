@@ -1,0 +1,36 @@
+{
+    "1": {
+        "id": "1",
+        "name": "1st round for ABC",
+        "university": "ABC",
+        "discountRules": [
+            {
+                "requirePeople": 10,
+                "discount": 10
+            },
+            {
+                "requirePeople": 20,
+                "discount": 20
+            },
+            {
+                "requirePeople": 30,
+                "discount": 30
+            }
+        ],
+        "startDate": 123410000,
+        "endDate": 1234123443
+    },
+    "2": {
+        "id": "2",
+        "name": "2nd round for XYZ",
+        "university": "XYZ",
+        "discountRules": [
+            {
+                "requirePeople": 50,
+                "discount": 50
+            }
+        ],
+        "startDate": 123410000,
+        "endDate": 1234123443
+    }
+}

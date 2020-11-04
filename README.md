@@ -14,4 +14,4 @@ Alternatively you can run/debug the server by opening the project on VSCode and 
 
 # General
 
-...
+src/core/storage contains files that are used to fake a database

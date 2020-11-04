@@ -1,5 +1,6 @@
 import React from 'react'
 import $ from '../jquery-3.5.1.min'
+import { Link } from 'react-router-dom'
 
 class ListGroups extends React.Component {
     constructor() {
@@ -18,11 +19,16 @@ class ListGroups extends React.Component {
 
     loadGroups() {
         let serverAns;
+        let filter = {all:true};
         $.ajax({
             url: '/ajax/getGroups',
+            dataType: 'json',
             type: 'post',
+            contentType: 'application/json',
+            data: JSON.stringify(filter),
             success: (msg) => serverAns = msg,
             complete: (() => {
+                console.log(serverAns);
                 if (serverAns && serverAns.groups) {
                     this.groups = serverAns.groups;
                     this.setState({
@@ -71,6 +77,7 @@ class ListGroups extends React.Component {
                             <th>START DATE</th>
                             <th>END DATE</th>
                             <th>DISCOUNT RULES</th>
+                            <th>LANDING PAGE</th>
                         </tr>
                         {this.state.groupIds.map((id) => {
                             const { name, university, startDate, endDate, discountRules } = this.groups[id]; //destructuring
@@ -83,6 +90,7 @@ class ListGroups extends React.Component {
                                     <td>{startDate}</td>
                                     <td>{endDate}</td>
                                     <td>{this.printRules(discountRules)}</td>
+                                    <td><Link to={`/discountPage/${id}`}>Link</Link></td>
                                 </tr>
                             )
                         })}

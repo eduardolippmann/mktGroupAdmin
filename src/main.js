@@ -12,7 +12,8 @@ app.use(bodyParser.json());
 
 app.post('/ajax/hello', (req,res) => res.json('Hello you'));
 app.post('/ajax/getGroups', (req,res) => {
-    getGroupDiscount({all:true}, (err, data)=>{
+    let filter = req.body.filter;
+    getGroupDiscount(filter, (err, data)=>{
         res.json(data)
     });
 });

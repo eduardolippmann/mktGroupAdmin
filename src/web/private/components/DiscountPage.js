@@ -93,7 +93,7 @@ class DiscountPage extends React.Component {
                 </div>
                 <div style={{ height: "60%", width: "100%" }}>
                     <div style={{ height: "100%", width: "40%", float: "left" }}>
-                        Add your name to the group by midnight Saturday, 1st of December 2018. After the deadline, once we have reached 50 sign-ups, we will open the group discount for you to purchase your discounted AMBOSS access!
+                        Add your name to the group by midnight Saturday, 1st of December 2018. After the deadline, once we have reached 50 sign-ups, we will open the group discount for you to purchase your discounted XXXXX access!
                     </div>
                     <div style={{ height: "100%", width: "40%", float: "right" }}>
                         <form onSubmit={this.handleSubmit}>

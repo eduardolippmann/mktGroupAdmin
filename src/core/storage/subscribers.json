@@ -1,0 +1,36 @@
+{
+    "1": [
+        {
+            "firstName": "John",
+            "lastName": "Doe",
+            "email": "johndoe22@abc.com",
+            "groupId": 1
+        },
+        {
+            "firstName": "Jane",
+            "lastName": "One",
+            "email": "janeone123@abc.com",
+            "groupId": 1
+        }
+    ],
+    "2": [
+        {
+            "firstName": "Mike",
+            "lastName": "Teavee",
+            "email": "miketeavee@abc.com",
+            "groupId": 2
+        },
+        {
+            "firstName": "Veruca",
+            "lastName": "Salt",
+            "email": "verucasalt@abc.com",
+            "groupId": 2
+        },
+        {
+            "firstName": "Augustus",
+            "lastName": "Gloop",
+            "email": "augustusgloop@abc.com",
+            "groupId": 2
+        }
+    ]
+}

@@ -6,6 +6,8 @@ const fs = require('fs');
 const getGroupDiscount = require('./core/getGroupDiscount.js');
 const deleteGroupDiscount = require('./core/deleteGroupDiscount.js');
 const createGroupDiscount = require('./core/createGroupDiscount.js');
+const addSubscriber = require('./core/addSubscriber.js');
+const getSubscribers = require('./core/getSubscribers.js');
 
 const app = express();
 app.use(bodyParser.json());
@@ -29,6 +31,18 @@ app.post('/ajax/createGroup', (req,res) => {
         res.json(data);
     });
 });
+app.post('/ajax/getSubscribers', (req,res) => {
+    let filter = {};
+    getSubscribers(filter, (err, data)=>{
+        res.json(data)
+    });
+});
+app.post('/ajax/subscribe', (req,res) => {
+    let group = req.body.subscription;
+    addSubscriber(group, (err, data)=>{
+        res.json(data);
+    });
+});
 
 app.use(express.static(path.resolve(__dirname, 'web/public/')));
 app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, 'web/public/index.html')));
@@ -40,6 +54,8 @@ app.listen(3000, () => {
 });
 
 function restoreStorage() {
-    let data = fs.readFileSync("src/core/storage/defaultGroupDiscounts.json");
-    fs.writeFileSync("src/core/storage/groupDiscounts.json", data);
+    let groupDiscountsData = fs.readFileSync("src/core/storage/defaultGroupDiscounts.json");
+    fs.writeFileSync("src/core/storage/groupDiscounts.json", groupDiscountsData);
+    let subscribersData = fs.readFileSync("src/core/storage/defaultSubscribers.json");
+    fs.writeFileSync("src/core/storage/subscribers.json", subscribersData);
 }

@@ -5,6 +5,7 @@ class DiscountPage extends React.Component {
     constructor() {
         super();
         this.loadGroup = this.loadGroup.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
             groupLoaded: false,
             subscribed: false
@@ -25,7 +26,7 @@ class DiscountPage extends React.Component {
 
     loadGroup(id) {
         let serverAns;
-        let data = { ids: [id] };
+        let data = {filter: { ids: [id] }};
         $.ajax({
             url: '/ajax/getGroups',
             dataType: 'json',
@@ -45,7 +46,7 @@ class DiscountPage extends React.Component {
     }
 
     handleSubmit(ev) {
-        // ev.preventDefault();
+        ev.preventDefault();
         let userSubscription = {
             firstName: this.firstNameInput.current.value,
             lastName: this.lastNameInput.current.value,
@@ -53,23 +54,23 @@ class DiscountPage extends React.Component {
             groupId: this.groupId
         };
 
-        // console.log('Create: ', group);
+        console.log('Create: ', this.group);
         let serverAns;
         let data = { subscription: userSubscription };
         console.log('Subscribe: ', data);
-        // $.ajax({
-        //     url: '/ajax/subscribe',
-        //     dataType: 'json',
-        //     type: 'post',
-        //     contentType: 'application/json',
-        //     data: JSON.stringify(data),
-        //     success: (msg) => serverAns = msg,
-        //     complete: (() => {
-        //         this.setState({
-        //             subscribed: true
-        //         });
-        //     }).bind(this)
-        // });
+        $.ajax({
+            url: '/ajax/subscribe',
+            dataType: 'json',
+            type: 'post',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: (msg) => serverAns = msg,
+            complete: (() => {
+                this.setState({
+                    subscribed: true
+                });
+            }).bind(this)
+        });
     }
 
     render() {

@@ -7,9 +7,11 @@ class ListGroups extends React.Component {
         super();
         this.deleteGroup = this.deleteGroup.bind(this);
         this.loadGroups = this.loadGroups.bind(this);
+        this.loadSubscribers = this.loadSubscribers.bind(this);
 
         this.state = {
-            groupIds: []
+            groupIds: [],
+            loadComplete: false
         }
     }
 
@@ -19,7 +21,7 @@ class ListGroups extends React.Component {
 
     loadGroups() {
         let serverAns;
-        let filter = {all:true};
+        let filter = {filter: {all:true}};
         $.ajax({
             url: '/ajax/getGroups',
             dataType: 'json',
@@ -31,6 +33,7 @@ class ListGroups extends React.Component {
                 console.log(serverAns);
                 if (serverAns && serverAns.groups) {
                     this.groups = serverAns.groups;
+                    this.loadSubscribers()
                     this.setState({
                         groupIds: Object.keys(this.groups)
                     });
@@ -55,6 +58,21 @@ class ListGroups extends React.Component {
         });
     }
 
+    loadSubscribers() {
+        let serverAns;
+        $.ajax({
+            url: '/ajax/getSubscribers',
+            type: 'post',
+            success: (msg) => serverAns = msg,
+            complete: (() => {
+                this.subscribers = serverAns;
+                this.setState({
+                    loadComplete: true
+                });
+            }).bind(this)
+        });
+    }
+
     printRules(rules) {
         let ret = '';
         for(var i = 0; i < rules.length; i++) {
@@ -64,7 +82,13 @@ class ListGroups extends React.Component {
     }
 
     render() {
-
+        if(!this.state.loadComplete) {
+            return(
+                <div>
+                    LOADING
+                </div>
+            );
+        }
         return (
             <React.Fragment>
                 <table id='students'>
@@ -77,6 +101,7 @@ class ListGroups extends React.Component {
                             <th>START DATE</th>
                             <th>END DATE</th>
                             <th>DISCOUNT RULES</th>
+                            <th>SUBSCRIBERS</th>
                             <th>LANDING PAGE</th>
                         </tr>
                         {this.state.groupIds.map((id) => {
@@ -90,6 +115,7 @@ class ListGroups extends React.Component {
                                     <td>{startDate}</td>
                                     <td>{endDate}</td>
                                     <td>{this.printRules(discountRules)}</td>
+                                    <td>{this.subscribers[id] ? this.subscribers[id].length : 0}</td>
                                     <td><Link to={`/discountPage/${id}`}>Link</Link></td>
                                 </tr>
                             )

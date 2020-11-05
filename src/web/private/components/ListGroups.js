@@ -8,6 +8,9 @@ class ListGroups extends React.Component {
         this.deleteGroup = this.deleteGroup.bind(this);
         this.loadGroups = this.loadGroups.bind(this);
         this.loadSubscribers = this.loadSubscribers.bind(this);
+        this.finalizeGroup = this.finalizeGroup.bind(this);
+        this.hideSubscribes = this.hideSubscribes.bind(this);
+        this.showSubscribes = this.showSubscribes.bind(this);
 
         this.state = {
             groupIds: [],
@@ -58,6 +61,22 @@ class ListGroups extends React.Component {
         });
     }
 
+    finalizeGroup(id) {
+        let serverAns;
+        let data = {id:id};
+        $.ajax({
+            url: '/ajax/finalizeGroup',
+            dataType: 'json',
+            type: 'post',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: (msg) => serverAns = msg,
+            complete: (() => {
+                this.deleteGroup(id);
+            }).bind(this)
+        });
+    }
+
     loadSubscribers() {
         let serverAns;
         $.ajax({
@@ -71,6 +90,17 @@ class ListGroups extends React.Component {
                 });
             }).bind(this)
         });
+    }
+
+    hideSubscribes(id) {
+
+    }
+
+    showSubscribes(id) {
+        let subsToShow = this.subscribers[id] || [];
+        for(var i = 0; i < subsToShow.length; i++) {
+            console.log(`${subsToShow[i].lastName}, ${subsToShow[i].firstName} : ${subsToShow[i].email}`);
+        }
     }
 
     printRules(rules) {
@@ -115,8 +145,9 @@ class ListGroups extends React.Component {
                                     <td>{startDate}</td>
                                     <td>{endDate}</td>
                                     <td>{this.printRules(discountRules)}</td>
-                                    <td>{this.subscribers[id] ? this.subscribers[id].length : 0}</td>
+                                    <td onMouseEnter={(()=>this.showSubscribes(id))} onMouseLeave={(()=>this.hideSubscribes(id))}>{this.subscribers[id] ? this.subscribers[id].length : 0}</td>
                                     <td><Link to={`/discountPage/${id}`}>Link</Link></td>
+                                    <td><button onClick={(()=>this.finalizeGroup(id))}>Finalize</button></td>
                                 </tr>
                             )
                         })}

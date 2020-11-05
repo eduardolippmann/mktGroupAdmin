@@ -5,6 +5,7 @@ const fs = require('fs');
 
 const getGroupDiscount = require('./core/getGroupDiscount.js');
 const deleteGroupDiscount = require('./core/deleteGroupDiscount.js');
+const finalizeGroupDiscount = require('./core/finalizeGroupDiscount.js');
 const createGroupDiscount = require('./core/createGroupDiscount.js');
 const addSubscriber = require('./core/addSubscriber.js');
 const getSubscribers = require('./core/getSubscribers.js');
@@ -22,6 +23,12 @@ app.post('/ajax/getGroups', (req,res) => {
 app.post('/ajax/deleteGroup', (req,res) => {
     let id = req.body.id;
     deleteGroupDiscount({id:id}, (err, data)=>{
+        res.json(data);
+    });
+});
+app.post('/ajax/finalizeGroup', (req,res) => {
+    let id = req.body.id;
+    finalizeGroupDiscount({id:id}, (err, data)=>{
         res.json(data);
     });
 });

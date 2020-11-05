@@ -4,6 +4,7 @@ let lastId =2;
 const fs = require('fs');
 
 function createGroupDiscount(group, cb) {
+    let groupDiscounts;
     lastId++;
     group.id = lastId;
     fs.readFile("src/core/storage/groupDiscounts.json", (err, data)=>{

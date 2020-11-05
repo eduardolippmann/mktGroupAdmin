@@ -4,6 +4,7 @@ const fs = require('fs');
 
 function getGroupDiscount(filter, cb) {
     let ret = {};
+    let groupDiscounts;
     fs.readFile("src/core/storage/groupDiscounts.json", (err, data)=>{
         if(err) {
             cb(err, null);

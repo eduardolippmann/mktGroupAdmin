@@ -3,6 +3,7 @@ module.exports = deleteGroupDiscount;
 const fs = require('fs');
 
 function deleteGroupDiscount(filter, cb) {
+    let groupDiscounts;
     let ret = {};
     fs.readFile("src/core/storage/groupDiscounts.json", (err, data)=>{
         if(err) {

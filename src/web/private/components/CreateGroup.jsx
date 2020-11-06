@@ -1,7 +1,7 @@
 import React from 'react'
 import $ from '../jquery-3.5.1.min'
 
-const inputStyle = { width: "100%", border: "none", borderBottom: "2px solid black" };
+const inputStyle = { width: "99%", border: "none", borderBottom: "2px solid black" };
 
 class CreateGroup extends React.Component {
     constructor() {
@@ -70,7 +70,7 @@ class CreateGroup extends React.Component {
 
     render() {
         return (
-            <div style={{ height: "100%", width: "100%" }}>
+            <div style={{ height: "100%", width: "100%", overflowY:"auto" }}>
                 <div style={{ width: "100%", height: "5%", float: "left", textAlign: "center", marginTop: "10px" }}>
                     Create new Group Discount
                 </div>
@@ -91,7 +91,7 @@ class CreateGroup extends React.Component {
                         End Date:
                         <input type="text" ref={this.endDate} style={inputStyle} />
                     </label>
-                    <div style={{width:"100%", height:"30px", marginTop:"20px"}}>
+                    <div style={{width:"99%", height:"30px", marginTop:"20px"}}>
                         <span style={{float:"left", border:"1px solid black", borderRadius:"5px"}} onClick={this.addRule}>+ Add Rule&nbsp;</span>
                         <span style={{float:"left", width:"40%", marginLeft:"20px"}}>Rules:</span>
                     </div>

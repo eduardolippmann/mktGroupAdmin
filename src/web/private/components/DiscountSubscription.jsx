@@ -8,8 +8,11 @@ class DiscountPage extends React.Component {
         super();
         this.loadGroup = this.loadGroup.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.generateDiscountTable = this.generateDiscountTable.bind(this);
+        this.generateCurrentDiscountText = this.generateCurrentDiscountText.bind(this);
+
         this.state = {
-            groupLoaded: false,
+            dataLoaded: false,
             subscribed: false
         };
 
@@ -28,7 +31,7 @@ class DiscountPage extends React.Component {
 
     loadGroup(id) {
         let serverAns;
-        let data = {filter: { ids: [id] }};
+        let data = { filter: { ids: [id] } };
         $.ajax({
             url: '/ajax/getGroups',
             dataType: 'json',
@@ -39,10 +42,68 @@ class DiscountPage extends React.Component {
             complete: (() => {
                 if (serverAns && serverAns.groups) {
                     this.group = serverAns.groups[id];
-                    this.setState({
-                        groupLoaded: true
-                    });
+                    this.getNumberOfSubscribers(id);
                 }
+            }).bind(this)
+        });
+    }
+
+    generateDiscountTable() {
+        let rules = this.group.discountRules;
+        return (
+            <table style={{width:"100%", border: "1px solid black", textAlign:"center", marginTop:"20px"}}>
+                <tbody>
+                    <tr>
+                        <th colSpan="2">Check our discount rules</th>
+                    </tr>
+                    {rules.map((rule, index) => {
+                            const { requirePeople, discount} = rule;
+                            return (
+                                <tr key={index}>
+                                    <td>{`${requirePeople}+ people`}</td>
+                                    <td>{`${discount}% discount`}</td>
+                                </tr>
+                            )
+                        })}
+                </tbody>
+            </table>
+        );
+    }
+
+    generateCurrentDiscountText() {
+        let rules = this.group.discountRules;
+        let currentPeople = this.numberOfSubscribers;
+
+        if(currentPeople == 0) {
+            return <span> <span style={{fontWeight:"bold"}}>Be the first one</span> to subscribe!</span>
+        }
+        if(currentPeople>=rules[rules.length-1].requirePeople) {
+            return <span> Lucky you! Join the {currentPeople} subscribers to <span style={{fontWeight:"bold"}}>get the top {rules[rules.length-1].discount}% discount</span>!</span>
+        }
+        for(var i=0;i<rules.length;i++) {
+            if(currentPeople >= rules[i].requirePeople) {
+                continue;
+            }
+            let missingPeople = rules[i].requirePeople-currentPeople;
+            return <span> We currently have {currentPeople} subscribers. <span style={{fontWeight:"bold"}}> Only {missingPeople} more </span>to activate the {rules[i].discount}% discount!</span>
+        }
+    }
+
+    getNumberOfSubscribers(id) {
+        let serverAns;
+        let data = { id: id };
+        $.ajax({
+            url: '/ajax/getNumberOfSubscribers',
+            dataType: 'json',
+            type: 'post',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: (msg) => serverAns = msg,
+            complete: (() => {
+                this.numberOfSubscribers = serverAns;
+                this.setState({
+                    dataLoaded: true
+                });
             }).bind(this)
         });
     }
@@ -55,11 +116,8 @@ class DiscountPage extends React.Component {
             email: this.emailInput.current.value,
             groupId: this.groupId
         };
-
-        console.log('Create: ', this.group);
         let serverAns;
         let data = { subscription: userSubscription };
-        console.log('Subscribe: ', data);
         $.ajax({
             url: '/ajax/subscribe',
             dataType: 'json',
@@ -82,7 +140,7 @@ class DiscountPage extends React.Component {
                     THANKS FOR SUBSCRIBING
                 </div>
             );
-        } else if (!this.state.groupLoaded) {
+        } else if (!this.state.dataLoaded) {
             return (
                 <div>
                     LOADING
@@ -92,18 +150,20 @@ class DiscountPage extends React.Component {
         const endDateStr = (new Date(this.group.endDate)).toDateString();
         return (
             <React.Fragment>
-                <div style={{ height: "10%", width: "100%", fontSize: "32px", fontWeight: "bold",backgroundColor:"#26D5A9", textAlign:"center" }}>
+                <div style={{ height: "10%", width: "100%", fontSize: "32px", fontWeight: "bold", backgroundColor: "#26D5A9", textAlign: "center" }}>
                     {this.group.university} Group Discount Sign-up
                 </div>
-                <div style={{ height: "60%", width: "100%", float: "left", marginTop:"50px" }}>
-                    <div style={{ height: "100%", width: "50%", float: "left", fontSize:"32px" }}>
-                        {`Add your name to the group by `}<span style={{fontWeight:"bold"}}>{`${endDateStr}`}</span>{`. After the deadline, once we have reached enough sign-ups, we will open the group discount for you to purchase your discounted access!`}
+                <div style={{ height: "60%", width: "100%", float: "left", marginTop: "50px" }}>
+                    <div style={{ height: "100%", width: "50%", float: "left", fontSize: "32px" }}>
+                        {`Add your name to the group by `}<span style={{ fontWeight: "bold" }}>{`${endDateStr}`}</span>{`. After the deadline, once we have reached enough sign-ups, we will open the group discount for you to purchase your discounted access!`}
+                        {this.generateDiscountTable()}
+                        {this.generateCurrentDiscountText()}
                     </div>
                     <div style={{ height: "100%", width: "40%", float: "right" }}>
                         <form onSubmit={this.handleSubmit}>
                             <label>
                                 First name:
-                                <input type="text" ref={this.firstNameInput} style={inputStyle}/>
+                                <input type="text" ref={this.firstNameInput} style={inputStyle} />
                             </label>
                             <label>
                                 Last name:
@@ -113,7 +173,7 @@ class DiscountPage extends React.Component {
                                 Email
                                 <input type="text" ref={this.emailInput} style={inputStyle} />
                             </label>
-                            <div style={{width:"100%", height:"30px", textAlign:"center", marginTop:"10px"}}>
+                            <div style={{ width: "100%", height: "30px", textAlign: "center", marginTop: "10px" }}>
                                 <input type="submit" value="Submit" />
                             </div>
                         </form>

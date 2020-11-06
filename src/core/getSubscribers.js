@@ -10,7 +10,13 @@ function getSubscribers(filter, cb) {
             return;
         }
         subscribers=JSON.parse(data.toString());
-        
-        cb(null, subscribers);
+        if(!filter) {
+            cb(null, subscribers);
+            return;
+        }
+        if(filter.id) {
+            cb(null, subscribers[filter.id] || []);
+            return;
+        }
     });
 }

@@ -33,7 +33,6 @@ class ListGroups extends React.Component {
             data: JSON.stringify(filter),
             success: (msg) => serverAns = msg,
             complete: (() => {
-                console.log(serverAns);
                 if (serverAns && serverAns.groups) {
                     this.groups = serverAns.groups;
                     this.loadSubscribers()
@@ -121,7 +120,7 @@ class ListGroups extends React.Component {
         }
         return (
             <React.Fragment>
-                <table id='students' style={{width:"100%", border: "1px solid black", textAlign:"center"}}>
+                <table style={{width:"100%", border: "1px solid black", textAlign:"center"}}>
                     <tbody>
                         <tr>
                             <th></th>

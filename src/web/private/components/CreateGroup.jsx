@@ -34,7 +34,6 @@ class CreateGroup extends React.Component {
             };
             group.discountRules.push(rule);
         }
-        // console.log('Create: ', group);
         let serverAns;
         let data = { group: group };
         $.ajax({
@@ -56,7 +55,7 @@ class CreateGroup extends React.Component {
     }
 
     generateRulesInput() {
-        return this.rules.map((rule, index) => (<React.Fragment>
+        return this.rules.map((rule, index) => (<React.Fragment key={index}>
             <label>
                 Require People:
                 <input type="text" ref={rule.requirePeople} style={inputStyle} />

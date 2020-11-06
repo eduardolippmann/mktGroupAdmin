@@ -24,8 +24,12 @@ function finalizeGroupDiscount(filter, cb) {
             subscribers=JSON.parse(data.toString());
             subscribersToSend = subscribers[filter.id] || [];
             discount = calculateDiscount(groupToFinalize.discountRules, subscribersToSend.length);
-            for(var i =0; i < subscribersToSend.length; i++) {
-                console.log(`Mail sent to: ${subscribersToSend[i].lastName}, ${subscribersToSend[i].firstName} with ${discount}% discount code`);
+            if(discount!=0) {
+                for(var i =0; i < subscribersToSend.length; i++) {
+                    console.log(`Mail sent to: ${subscribersToSend[i].lastName}, ${subscribersToSend[i].firstName} with ${discount}% discount code`);
+                }
+            } else {
+                console.log(`Group Discount ${groupToFinalize.name} ended without enough subscribers`);
             }
             cb(null, ret);
         });

@@ -17,8 +17,8 @@
                 "discount": 40
             }
         ],
-        "startDate": 123410000,
-        "endDate": 1234123443
+        "startDate": 1604674600000,
+        "endDate": 1605679993599
     },
     "2": {
         "id": "2",
@@ -30,7 +30,7 @@
                 "discount": 50
             }
         ],
-        "startDate": 123410000,
-        "endDate": 1234123443
+        "startDate": 1604674600000,
+        "endDate": 1607679993599
     }
 }

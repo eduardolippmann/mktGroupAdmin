@@ -32,5 +32,13 @@
             "email": "augustusgloop@abc.com",
             "groupId": 2
         }
+    ],
+    "3": [
+        {
+            "firstName": "eduardo",
+            "lastName": "lippmann",
+            "email": "a@b.c",
+            "groupId": "3"
+        }
     ]
 }

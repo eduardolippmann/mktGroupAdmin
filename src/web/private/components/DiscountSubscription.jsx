@@ -1,6 +1,8 @@
 import React from 'react'
 import $ from '../jquery-3.5.1.min'
 
+const inputStyle = { width: "99%", border: "none", borderBottom: "2px solid black" };
+
 class DiscountPage extends React.Component {
     constructor() {
         super();
@@ -87,30 +89,33 @@ class DiscountPage extends React.Component {
                 </div>
             );
         }
+        const endDateStr = (new Date(this.group.endDate)).toDateString();
         return (
             <React.Fragment>
-                <div style={{ height: "20%", width: "100%", fontSize: "32px", fontWeight: "bold" }}>
+                <div style={{ height: "10%", width: "100%", fontSize: "32px", fontWeight: "bold",backgroundColor:"#26D5A9", textAlign:"center" }}>
                     {this.group.university} Group Discount Sign-up
                 </div>
-                <div style={{ height: "60%", width: "100%" }}>
-                    <div style={{ height: "100%", width: "40%", float: "left" }}>
-                        Add your name to the group by midnight Saturday, 1st of December 2018. After the deadline, once we have reached 50 sign-ups, we will open the group discount for you to purchase your discounted XXXXX access!
+                <div style={{ height: "60%", width: "100%", float: "left", marginTop:"50px" }}>
+                    <div style={{ height: "100%", width: "50%", float: "left", fontSize:"32px" }}>
+                        {`Add your name to the group by `}<span style={{fontWeight:"bold"}}>{`${endDateStr}`}</span>{`. After the deadline, once we have reached enough sign-ups, we will open the group discount for you to purchase your discounted access!`}
                     </div>
                     <div style={{ height: "100%", width: "40%", float: "right" }}>
                         <form onSubmit={this.handleSubmit}>
                             <label>
                                 First name:
-                                <input type="text" ref={this.firstNameInput} />
+                                <input type="text" ref={this.firstNameInput} style={inputStyle}/>
                             </label>
                             <label>
                                 Last name:
-                                <input type="text" ref={this.lastNameInput} />
+                                <input type="text" ref={this.lastNameInput} style={inputStyle} />
                             </label>
                             <label>
                                 Email
-                                <input type="text" ref={this.emailInput} />
+                                <input type="text" ref={this.emailInput} style={inputStyle} />
                             </label>
-                            <input type="submit" value="Submit" />
+                            <div style={{width:"100%", height:"30px", textAlign:"center", marginTop:"10px"}}>
+                                <input type="submit" value="Submit" />
+                            </div>
                         </form>
                     </div>
                 </div>
